@@ -44,7 +44,7 @@ class Program
         Console.WriteLine($"A tangente de theta é {tangente}°");
 
         //calcula o valor da velocidade inicial (Vo)
-        double velocidadeInicial = VelocidadeInicial(aceleracaoGravidade, alturaAlvo, distanciaCanhao, theta);  \
+        double velocidadeInicial = VelocidadeInicial(aceleracaoGravidade, alturaAlvo, distanciaCanhao, theta);
 
         Console.WriteLine($"A velocidade inicial do projétil é: {velocidadeInicial}(m/s)");
 
