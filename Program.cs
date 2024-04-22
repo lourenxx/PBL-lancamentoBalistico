@@ -1,4 +1,6 @@
-﻿namespace PBL_lancamentoBalistico;
+﻿using System.Net;
+
+namespace PBL_lancamentoBalistico;
 
 class Program
 {
@@ -13,6 +15,12 @@ class Program
         
         // retorna o a tan⁻1 de theta
         return thetaEmGraus; 
+    }
+
+    static double VelocidadeInicial (double aceleracaoGravidade, double alturaAlvo, double distanciaCanhao, double theta)
+    {
+        double velocidadeInicial = Math.Sqrt(((Math.Pow(aceleracaoGravidade*distanciaCanhao, 2)*(1 + Math.Pow(theta,2))))/(2*((alturaAlvo - distanciaCanhao) * theta)));
+        return velocidadeInicial;
     }
     static void Main(string[] args)
     {
@@ -36,11 +44,11 @@ class Program
         Console.WriteLine($"A tangente de theta é {tangente}°");
 
         //calcula o valor da velocidade inicial (Vo)
-        double velocidadeInicial = Math.Sqrt(((Math.Pow(aceleracaoGravidade*distanciaCanhao, 2)*(1 + Math.Pow(theta,2))))/(2*((alturaAlvo - distanciaCanhao) * theta)));
+        double velocidadeInicial = VelocidadeInicial(aceleracaoGravidade, alturaAlvo, distanciaCanhao, theta);  \
 
         Console.WriteLine($"A velocidade inicial do projétil é: {velocidadeInicial}(m/s)");
 
-        
+        //calcula a velocidade no eixo X 
     
 
     }
