@@ -22,6 +22,17 @@ class Program
         double velocidadeInicial = Math.Sqrt(((Math.Pow(aceleracaoGravidade*distanciaCanhao, 2)*(1 + Math.Pow(theta,2))))/(2*((alturaAlvo - distanciaCanhao) * theta)));
         return velocidadeInicial;
     }
+
+    static double VelocidadeInicialEixoX (double velocidadeInicial, double theta)
+    {
+        double vEixoX = velocidadeInicial * Math.Cos(theta);
+        return vEixoX;
+    }
+      static double VelocidadeInicialEixoY (double velocidadeInicial, double theta)
+    {
+        double vEixoY = velocidadeInicial * Math.Sin(theta);
+        return vEixoY;
+    }
     static void Main(string[] args)
     {
         //entrada de dados
@@ -41,15 +52,26 @@ class Program
         //recebe a função para calcular o tan⁻1 de theta
         double tangente = TangenteTheta(theta);
 
-        Console.WriteLine($"A tangente de theta é {tangente}°");
+        Console.WriteLine($"Tangente de theta = {tangente}°");
 
         //calcula o valor da velocidade inicial (Vo)
         double velocidadeInicial = VelocidadeInicial(aceleracaoGravidade, alturaAlvo, distanciaCanhao, theta);
 
-        Console.WriteLine($"A velocidade inicial do projétil é: {velocidadeInicial}(m/s)");
+        Console.WriteLine($"Velocidade inicial do projétil = {velocidadeInicial}(m/s)");
 
-        //calcula a velocidade no eixo X 
-    
+        //calcula a velocidade no eixo X
+        double vEixoX = VelocidadeInicialEixoX(velocidadeInicial, theta);
+        
+        Console.WriteLine($"Velocidade inicial no EIXO X = {vEixoX}(m/s)");
+
+        //calcula a velocidade no eixo Y
+        double vEixoY = VelocidadeInicialEixoY(velocidadeInicial, theta);
+
+        Console.WriteLine($"Velocidade inicial no EIXO Y = {vEixoY}(m/s)");
+
+
+
+
 
     }
 }
