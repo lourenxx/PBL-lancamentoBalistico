@@ -20,6 +20,7 @@ class Program
 
         double alturaAlvo;
         double distanciaCanhao;
+        double aceleracaoGravidade = 9.80665;
 
         Console.Write("Digite a altura do alvo: ");
         alturaAlvo = double.Parse(Console.ReadLine());
@@ -32,6 +33,15 @@ class Program
         //recebe a função para calcular o tan⁻1 de theta
         double tangente = TangenteTheta(theta);
 
-        Console.WriteLine($"A tangente de theta é {tangente}");
+        Console.WriteLine($"A tangente de theta é {tangente}°");
+
+        //calcula o valor da velocidade inicial (Vo)
+        double velocidadeInicial = Math.Sqrt(((Math.Pow(aceleracaoGravidade*distanciaCanhao, 2)*(1 + Math.Pow(theta,2))))/(2*((alturaAlvo - distanciaCanhao) * theta)));
+
+        Console.WriteLine($"A velocidade inicial do projétil é: {velocidadeInicial}(m/s)");
+
+        
+    
+
     }
 }
