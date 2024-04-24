@@ -17,22 +17,45 @@ class Program
         return thetaEmGraus; 
     }
 
-    static double VelocidadeInicial (double aceleracaoGravidade, double alturaAlvo, double distanciaCanhao, double theta)
+    static double VelocidadeInicial (double aceleracaoGravidade, double alturaAlvo, double distanciaCanhao, double thetaUsuario)
     {
-        double velocidadeInicial = Math.Sqrt(((Math.Pow(aceleracaoGravidade*distanciaCanhao, 2)*(1 + Math.Pow(theta,2))))/(2*((alturaAlvo - distanciaCanhao) * theta)));
+        // Convertendo o ângulo de graus para radianos
+        double thetaRad = thetaUsuario * Math.PI / 180;
+
+        // Calculando a tangente do ângulo de elevação
+        double tangenteUsuario = Math.Tan(thetaRad);
+
+        // Calculando a velocidade inicial
+        double velocidadeInicial = Math.Sqrt((-aceleracaoGravidade * Math.Pow(distanciaCanhao, 2) * (1 + Math.Pow(tangenteUsuario, 2))) / (2 * (alturaAlvo - distanciaCanhao * tangenteUsuario)));
+
         return velocidadeInicial;
     }
 
-    static double VelocidadeInicialEixoX (double velocidadeInicial, double theta)
+    static double VelocidadeInicialEixoX (double velocidadeInicial, double thetaUsuario)
     {
-        double vEixoX = velocidadeInicial * Math.Cos(theta);
+                // Convertendo o ângulo de graus para radianos
+        double thetaRad = thetaUsuario * Math.PI / 180;
+        double vEixoX = velocidadeInicial * Math.Cos(thetaRad);
         return vEixoX;
     }
-      static double VelocidadeInicialEixoY (double velocidadeInicial, double theta)
+      static double VelocidadeInicialEixoY (double velocidadeInicial, double tangenteUsuario)
     {
-        double vEixoY = velocidadeInicial * Math.Sin(theta);
+        double vEixoY = velocidadeInicial * Math.Sin(tangenteUsuario);
         return vEixoY;
     }
+
+    static double TempoGasto (double distanciaCanhao, double vEixoX)
+    {
+        double tempoGasto = distanciaCanhao / (vEixoX);
+        return tempoGasto;
+    }
+
+    static double ComponenteVertical (double vEixoY, double aceleracaoGravidade, double tempoGasto)
+    {
+        double componenteVertical = vEixoY - (aceleracaoGravidade * tempoGasto);
+        return componenteVertical;
+    }
+
     static void Main(string[] args)
     {
         //entrada de dados
@@ -52,23 +75,44 @@ class Program
         //recebe a função para calcular o tan⁻1 de theta
         double tangente = TangenteTheta(theta);
 
-        Console.WriteLine($"Tangente de theta = {tangente}°");
+        Console.WriteLine($"Tangente mínima para atingir o alvo: {tangente}°");
 
+        Console.WriteLine($"Escolha um valor maior do que {tangente}: ");
+        double thetaUsuario = double.Parse(Console.ReadLine());
+        
         //calcula o valor da velocidade inicial (Vo)
-        double velocidadeInicial = VelocidadeInicial(aceleracaoGravidade, alturaAlvo, distanciaCanhao, theta);
+        double velocidadeInicial = VelocidadeInicial(aceleracaoGravidade, alturaAlvo, distanciaCanhao, thetaUsuario);
 
         Console.WriteLine($"Velocidade inicial do projétil = {velocidadeInicial}(m/s)");
 
         //calcula a velocidade no eixo X
-        double vEixoX = VelocidadeInicialEixoX(velocidadeInicial, theta);
+        double vEixoX = VelocidadeInicialEixoX(velocidadeInicial, thetaUsuario);
         
         Console.WriteLine($"Velocidade inicial no EIXO X = {vEixoX}(m/s)");
 
         //calcula a velocidade no eixo Y
-        double vEixoY = VelocidadeInicialEixoY(velocidadeInicial, theta);
+        double vEixoY = VelocidadeInicialEixoY(velocidadeInicial, thetaUsuario);
 
         Console.WriteLine($"Velocidade inicial no EIXO Y = {vEixoY}(m/s)");
 
+        //calcula o tempo gasto
+        double tempoGasto = TempoGasto(distanciaCanhao, vEixoX);
+        Console.WriteLine($"Tempo gasto para atingir o alvo: {tempoGasto}");
+
+        //calculca a componente vertical
+        double componenteVertical = ComponenteVertical(vEixoY, aceleracaoGravidade, tempoGasto);
+
+        //verifica se o alvo será atingido na subida ou na descida
+        if(componenteVertical > 1)
+        {
+            Console.WriteLine("O alvo será atingido durante a subida");
+        }
+        else
+        {
+            Console.WriteLine("O alvo será atingido durante a descida");
+        }
+
+        Console.ReadKey();
 
 
 
