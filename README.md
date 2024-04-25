@@ -11,5 +11,17 @@ Experimental I. Para isso, o software irá executar uma aplicação que fará o 
 simulação de um lançamento balístico com alvo estacionário, conforme detalhamento a
 seguir:
 
+Com base nessas informações, o programa a ser desenvolvido deve:
+**a ->**  Retornar ao usuário o valor que θ deve superar para que o objetivo seja cumprido.
 
-![Imagem do canhão](imagemCanhao.png)
+**b ->**  Solicitar ao usuário que entre com um valor válido para θ.
+
+**c ->**  Fornecer o(s) valor(es) da velocidade inicial do lançamento, v0, para que o objetivo seja cumprido.
+
+**d ->**  Encontrar o intervalo de tempo gasto desde o lançamento do projétil até atingir o alvo.
+
+**e ->**  Informar se o alvo é atingido quando o projétil está em movimento ascendente ou descendente.
+
+**f ->**  Fornecer um gráfico da trajetória do projétil, isto é: coordenada vertical (y) em função da coordenada
+      horizontal (x). Obs.: O grupo pode também optar por apresentar a evolução temporal do movimento do
+      projétil até que o alvo seja atingido (animação).
