@@ -12,4 +12,4 @@ simulação de um lançamento balístico com alvo estacionário, conforme detalh
 seguir:
 
 
-![Imagem do canhão](PBL-lancamentoBalistico/imagemCanhao.png)
+![Imagem do canhão](imagemCanhao.png)
