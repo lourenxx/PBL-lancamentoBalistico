@@ -11,6 +11,13 @@ Experimental I. Para isso, o software irá executar uma aplicação que fará o 
 simulação de um lançamento balístico com alvo estacionário, conforme detalhamento a
 seguir:
 
+Considere o canhão inclinado de um ângulo θ em relação à horizontal.
+Ele dispara um projétil com velocidade inicial de módulo v0, com o objetivo de acertar um alvo
+estacionário situado em P, sendo conhecidos os valores da distância horizontal x (entre o ponto de
+lançamento e a vertical do alvo) e a altura H do alvo em relação ao solo (horizontal).
+
+A resistência do ar é desprezível e a aceleração gravitacional local tem intensidade g = 9,8 m/s².
+
 Com base nessas informações, o programa a ser desenvolvido deve:
 
 **a ->**  Retornar ao usuário o valor que θ deve superar para que o objetivo seja cumprido.
