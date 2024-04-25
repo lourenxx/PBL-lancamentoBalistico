@@ -81,80 +81,89 @@ class Program
         //loop que executa o script
         do 
         {
-
-        //entrada de dados
-        Console.Write("Digite a altura do alvo: ");
-        alturaAlvo = double.Parse(Console.ReadLine());
-        Console.Write("Digite a distancia do canhão: ");
-        distanciaCanhao = double.Parse(Console.ReadLine());
-
-
-        //calcula o angulo theta
-        double theta = alturaAlvo / distanciaCanhao;
-
-        //recebe a função para calcular o tan⁻1 de theta
-        double tangente = TangenteTheta(theta);
-
-        //mostra a tangente mínima para atingir o alvo
-        Console.WriteLine("");
-        Console.WriteLine($"Tangente mínima para atingir o alvo: {tangente}°");
-        Console.WriteLine("");
+            //tratamento de exceção para valores invalidos
+            try
+            {
+                //entrada de dados
+                Console.Write("Digite a altura do alvo: ");
+                alturaAlvo = double.Parse(Console.ReadLine());
+                Console.Write("Digite a distancia do canhão: ");
+                distanciaCanhao = double.Parse(Console.ReadLine());
 
 
-        //exige que o usuário escolha um valor maior do que a tangente mínima
-        Console.Write($"Escolha um valor maior do que {tangente}: ");
-        double thetaUsuario = double.Parse(Console.ReadLine());
-        Console.WriteLine("");
-        
+                //calcula o angulo theta
+                double theta = alturaAlvo / distanciaCanhao;
 
-        //calcula o valor da velocidade inicial (Vo)
-        double velocidadeInicial = VelocidadeInicial(aceleracaoGravidade, alturaAlvo, distanciaCanhao, thetaUsuario);
-        Console.WriteLine("----------------------------------------------------------");
-        Console.WriteLine($"Velocidade inicial do projétil = {velocidadeInicial}(m/s)");
+                //recebe a função para calcular o tan⁻1 de theta
+                double tangente = TangenteTheta(theta);
 
-
-        //calcula a velocidade no eixo X
-        double vEixoX = VelocidadeInicialEixoX(velocidadeInicial, thetaUsuario);
-        Console.WriteLine("----------------------------------------------------------");
-        Console.WriteLine($"Velocidade inicial no EIXO X = {vEixoX}(m/s)");
+                //mostra a tangente mínima para atingir o alvo
+                Console.WriteLine("");
+                Console.WriteLine($"Tangente mínima para atingir o alvo: {tangente}°");
+                Console.WriteLine("");
 
 
-        //calcula a velocidade no eixo Y
-        double vEixoY = VelocidadeInicialEixoY(velocidadeInicial, thetaUsuario);
-        Console.WriteLine("----------------------------------------------------------");
-        Console.WriteLine($"Velocidade inicial no EIXO Y = {vEixoY}(m/s)");
+                //exige que o usuário escolha um valor maior do que a tangente mínima
+                Console.Write($"Escolha um valor maior do que {tangente}: ");
+                double thetaUsuario = double.Parse(Console.ReadLine());
+                Console.WriteLine("");
+
+                //calcula o valor da velocidade inicial (Vo)
+                double velocidadeInicial = VelocidadeInicial(aceleracaoGravidade, alturaAlvo, distanciaCanhao, thetaUsuario);
+                Console.WriteLine("----------------------------------------------------------");
+                Console.WriteLine($"Velocidade inicial do projétil = {velocidadeInicial}(m/s)");
 
 
-        //calcula o tempo gasto
-        double tempoGasto = TempoGasto(distanciaCanhao, vEixoX);
-        Console.WriteLine("----------------------------------------------------------");
-        Console.WriteLine($"Tempo gasto para atingir o alvo: {tempoGasto}");
+                //calcula a velocidade no eixo X
+                double vEixoX = VelocidadeInicialEixoX(velocidadeInicial, thetaUsuario);
+                Console.WriteLine("----------------------------------------------------------");
+                Console.WriteLine($"Velocidade inicial no EIXO X = {vEixoX}(m/s)");
 
 
-        //calculca a componente vertical
-        double componenteVertical = ComponenteVertical(vEixoY, aceleracaoGravidade, tempoGasto);
+                //calcula a velocidade no eixo Y
+                double vEixoY = VelocidadeInicialEixoY(velocidadeInicial, thetaUsuario);
+                Console.WriteLine("----------------------------------------------------------");
+                Console.WriteLine($"Velocidade inicial no EIXO Y = {vEixoY}(m/s)");
 
-        //verifica se o alvo será atingido na subida ou na descida
-        if(componenteVertical > 1)
-        {
+
+                //calcula o tempo gasto
+                double tempoGasto = TempoGasto(distanciaCanhao, vEixoX);
+                Console.WriteLine("----------------------------------------------------------");
+                Console.WriteLine($"Tempo gasto para atingir o alvo: {tempoGasto}");
+
+
+                //calculca a componente vertical
+                double componenteVertical = ComponenteVertical(vEixoY, aceleracaoGravidade, tempoGasto);
+                
+
+                //verifica se o alvo será atingido na subida ou na descida
+                if(componenteVertical > 1)
+                {
+                    Console.WriteLine("----------------------------------------------------------");
+                    Console.WriteLine("O alvo será atingido durante a SUBIDA");
+                }
+                else
+                {
+                    Console.WriteLine("----------------------------------------------------------");
+                    Console.WriteLine("O alvo será atingido durante a DESCIDA");
+                }
+
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Erro: Entrada inválida. Certifique-se de digitar um número válido.");
+            }
+            
+       
             Console.WriteLine("----------------------------------------------------------");
-            Console.WriteLine("O alvo será atingido durante a SUBIDA");
-        }
-        else
-        {
-            Console.WriteLine("----------------------------------------------------------");
-            Console.WriteLine("O alvo será atingido durante a DESCIDA");
-        }
+            Console.WriteLine("Deseja Calcula uma nova trajetoria? Digite 'sim' ou 'nao'");
+            resposta = Console.ReadLine();
 
-        Console.WriteLine("----------------------------------------------------------");
-        Console.WriteLine("Deseja Calcula uma nova trajetoria? Digite 'sim' ou 'nao'");
-        resposta = Console.ReadLine();
-
-        if(resposta.ToLower() == "nao")
-        {
-            Console.WriteLine("Fechando...");
-            break;
-        }
+            if(resposta.ToLower() == "nao")
+            {
+                Console.WriteLine("Fechando...");
+                break;
+            }
 
         }while(resposta.ToLower() == "sim");
         
