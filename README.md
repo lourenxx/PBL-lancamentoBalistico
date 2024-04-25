@@ -12,6 +12,7 @@ simulação de um lançamento balístico com alvo estacionário, conforme detalh
 seguir:
 
 Com base nessas informações, o programa a ser desenvolvido deve:
+
 **a ->**  Retornar ao usuário o valor que θ deve superar para que o objetivo seja cumprido.
 
 **b ->**  Solicitar ao usuário que entre com um valor válido para θ.
