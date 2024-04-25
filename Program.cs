@@ -134,7 +134,7 @@ class Program
 
                 //calculca a componente vertical
                 double componenteVertical = ComponenteVertical(vEixoY, aceleracaoGravidade, tempoGasto);
-                
+
 
                 //verifica se o alvo será atingido na subida ou na descida
                 if(componenteVertical > 1)
@@ -156,7 +156,7 @@ class Program
             
        
             Console.WriteLine("----------------------------------------------------------");
-            Console.WriteLine("Deseja Calcula uma nova trajetoria? Digite 'sim' ou 'nao'");
+            Console.WriteLine("Deseja Calcular uma nova trajetoria? Digite 'sim' ou 'nao'");
             resposta = Console.ReadLine();
 
             if(resposta.ToLower() == "nao")
