@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Security.Cryptography;
 
 namespace PBL_lancamentoBalistico;
 
@@ -17,6 +18,7 @@ class Program
         return thetaEmGraus; 
     }
 
+    //função que calcula a velocidade inicial
     static double VelocidadeInicial (double aceleracaoGravidade, double alturaAlvo, double distanciaCanhao, double thetaUsuario)
     {
         // Convertendo o ângulo de graus para radianos
@@ -31,43 +33,61 @@ class Program
         return velocidadeInicial;
     }
 
+
+    //função que calcula a velocidade inicial no eixo X
     static double VelocidadeInicialEixoX (double velocidadeInicial, double thetaUsuario)
     {
-                // Convertendo o ângulo de graus para radianos
+        // Convertendo o ângulo de graus para radianos
         double thetaRad = thetaUsuario * Math.PI / 180;
         double vEixoX = velocidadeInicial * Math.Cos(thetaRad);
         return vEixoX;
     }
-      static double VelocidadeInicialEixoY (double velocidadeInicial, double tangenteUsuario)
+
+
+    //função que calcula a velocidade inicial no eixo Y
+          static double VelocidadeInicialEixoY (double velocidadeInicial, double tangenteUsuario)
     {
         double vEixoY = velocidadeInicial * Math.Sin(tangenteUsuario);
         return vEixoY;
     }
 
+
+
+    //função que calcula o tempo gasto pelo projetil até atingir o alvo
     static double TempoGasto (double distanciaCanhao, double vEixoX)
     {
         double tempoGasto = distanciaCanhao / (vEixoX);
         return tempoGasto;
     }
 
+
+
+    //função que calcula a componte vertical
     static double ComponenteVertical (double vEixoY, double aceleracaoGravidade, double tempoGasto)
     {
         double componenteVertical = vEixoY - (aceleracaoGravidade * tempoGasto);
         return componenteVertical;
     }
 
+
     static void Main(string[] args)
     {
-        //entrada de dados
-
+        //variáveis
+        string resposta;
         double alturaAlvo;
         double distanciaCanhao;
         double aceleracaoGravidade = 9.80665;
 
+        //loop que executa o script
+        do 
+        {
+
+        //entrada de dados
         Console.Write("Digite a altura do alvo: ");
         alturaAlvo = double.Parse(Console.ReadLine());
         Console.Write("Digite a distancia do canhão: ");
         distanciaCanhao = double.Parse(Console.ReadLine());
+
 
         //calcula o angulo theta
         double theta = alturaAlvo / distanciaCanhao;
@@ -75,29 +95,41 @@ class Program
         //recebe a função para calcular o tan⁻1 de theta
         double tangente = TangenteTheta(theta);
 
+        //mostra a tangente mínima para atingir o alvo
+        Console.WriteLine("");
         Console.WriteLine($"Tangente mínima para atingir o alvo: {tangente}°");
+        Console.WriteLine("");
 
-        Console.WriteLine($"Escolha um valor maior do que {tangente}: ");
+
+        //exige que o usuário escolha um valor maior do que a tangente mínima
+        Console.Write($"Escolha um valor maior do que {tangente}: ");
         double thetaUsuario = double.Parse(Console.ReadLine());
+        Console.WriteLine("");
         
+
         //calcula o valor da velocidade inicial (Vo)
         double velocidadeInicial = VelocidadeInicial(aceleracaoGravidade, alturaAlvo, distanciaCanhao, thetaUsuario);
-
+        Console.WriteLine("----------------------------------------------------------");
         Console.WriteLine($"Velocidade inicial do projétil = {velocidadeInicial}(m/s)");
+
 
         //calcula a velocidade no eixo X
         double vEixoX = VelocidadeInicialEixoX(velocidadeInicial, thetaUsuario);
-        
+        Console.WriteLine("----------------------------------------------------------");
         Console.WriteLine($"Velocidade inicial no EIXO X = {vEixoX}(m/s)");
+
 
         //calcula a velocidade no eixo Y
         double vEixoY = VelocidadeInicialEixoY(velocidadeInicial, thetaUsuario);
-
+        Console.WriteLine("----------------------------------------------------------");
         Console.WriteLine($"Velocidade inicial no EIXO Y = {vEixoY}(m/s)");
+
 
         //calcula o tempo gasto
         double tempoGasto = TempoGasto(distanciaCanhao, vEixoX);
+        Console.WriteLine("----------------------------------------------------------");
         Console.WriteLine($"Tempo gasto para atingir o alvo: {tempoGasto}");
+
 
         //calculca a componente vertical
         double componenteVertical = ComponenteVertical(vEixoY, aceleracaoGravidade, tempoGasto);
@@ -105,17 +137,28 @@ class Program
         //verifica se o alvo será atingido na subida ou na descida
         if(componenteVertical > 1)
         {
-            Console.WriteLine("O alvo será atingido durante a subida");
+            Console.WriteLine("----------------------------------------------------------");
+            Console.WriteLine("O alvo será atingido durante a SUBIDA");
         }
         else
         {
-            Console.WriteLine("O alvo será atingido durante a descida");
+            Console.WriteLine("----------------------------------------------------------");
+            Console.WriteLine("O alvo será atingido durante a DESCIDA");
         }
 
-        Console.ReadKey();
+        Console.WriteLine("----------------------------------------------------------");
+        Console.WriteLine("Deseja Calcula uma nova trajetoria? Digite 'sim' ou 'nao'");
+        resposta = Console.ReadLine();
 
+        if(resposta.ToLower() == "nao")
+        {
+            Console.WriteLine("Fechando...");
+            break;
+        }
 
-
-
+        }while(resposta.ToLower() == "sim");
+        
+   
+    Console.ReadKey();
     }
 }
