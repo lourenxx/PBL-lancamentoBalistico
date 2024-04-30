@@ -90,6 +90,9 @@ class Program
                 Console.Write("Digite a distancia do canhão: ");
                 distanciaCanhao = double.Parse(Console.ReadLine());
 
+                Console.WriteLine($"Altura do alvo: {alturaAlvo}");
+                Console.WriteLine($"Distância do canhão: {distanciaCanhao}");
+
 
                 //calcula o angulo theta
                 double theta = alturaAlvo / distanciaCanhao;
