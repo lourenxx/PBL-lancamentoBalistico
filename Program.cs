@@ -1,5 +1,8 @@
 ﻿using System.Net;
 using System.Security.Cryptography;
+using LiveCharts;
+using LiveCharts.Defaults;
+using LiveCharts.WinForms;
 
 namespace PBL_lancamentoBalistico;
 
@@ -60,13 +63,44 @@ class Program
         return tempoGasto;
     }
 
+     static void PlotarGrafico(double distanciaCanhao, double vEixoX, double vEixoY, double tempoTotal)
+        {
+            // Criando uma nova instância de um gráfico de dispersão
+            var chart = new CartesianChart();
+
+            // Definindo os valores dos eixos X e Y para o gráfico
+            ChartValues<ObservablePoint> valores = new ChartValues<ObservablePoint>();
+            for (double t = 0; t <= tempoTotal; t += 0.1) // Altere o incremento conforme necessário
+            {
+                double x = distanciaCanhao + vEixoX * t;
+                double y = vEixoY * t - 0.5 * 9.80665 * t * t; // Considerando a aceleração da gravidade constante
+                valores.Add(new ObservablePoint(x, y));
+            }
+
+            // Adicionando os valores ao gráfico
+            SeriesCollection series = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Trajetória",
+                    Values = valores
+                }
+            };
+            chart.Series = series;
+
+            // Exibindo o gráfico
+            chart.Show();
+        }
+
+}
 
 
-    //função que calcula a componte vertical
-    static double ComponenteVertical (double vEixoY, double aceleracaoGravidade, double tempoGasto)
+
+    //função que calcula a altura maxima
+    static double AlturaMaximaTrajetoria(double vEixoY)
     {
-        double componenteVertical = vEixoY - (aceleracaoGravidade * tempoGasto);
-        return componenteVertical;
+        double alturaMaxima = Math.Pow(vEixoY, 2) / (2 * 9.80665); // 9.80665 é a aceleração devido à gravidade
+        return alturaMaxima;
     }
 
 
@@ -76,6 +110,7 @@ class Program
         string resposta;
         double alturaAlvo;
         double distanciaCanhao;
+        string arquivoDados = "dados.txt";
         double aceleracaoGravidade = 9.80665;
 
         //loop que executa o script
@@ -84,14 +119,22 @@ class Program
             //tratamento de exceção para valores invalidos
             try
             {
+                // Verifica se o arquivo existe e o exclui se existir
+                if (File.Exists(arquivoDados))
+                {
+                    File.Delete(arquivoDados);
+                }
+
+
                 //entrada de dados
                 Console.Write("Digite a altura do alvo: ");
                 alturaAlvo = double.Parse(Console.ReadLine());
                 Console.Write("Digite a distancia do canhão: ");
                 distanciaCanhao = double.Parse(Console.ReadLine());
 
-                Console.WriteLine($"Altura do alvo: {alturaAlvo}");
-                Console.WriteLine($"Distância do canhão: {distanciaCanhao}");
+                Console.Write($"Altura do alvo: {alturaAlvo}");
+                Console.WriteLine("");
+                Console.Write($"Distância do canhão: {distanciaCanhao}");
 
 
                 //calcula o angulo theta
@@ -114,19 +157,19 @@ class Program
                 //calcula o valor da velocidade inicial (Vo)
                 double velocidadeInicial = VelocidadeInicial(aceleracaoGravidade, alturaAlvo, distanciaCanhao, thetaUsuario);
                 Console.WriteLine("----------------------------------------------------------");
-                Console.WriteLine($"Velocidade inicial do projétil = {velocidadeInicial}(m/s)");
+                Console.WriteLine($"Velocidade inicial do projétil: {velocidadeInicial}(m/s)");
 
 
                 //calcula a velocidade no eixo X
                 double vEixoX = VelocidadeInicialEixoX(velocidadeInicial, thetaUsuario);
                 Console.WriteLine("----------------------------------------------------------");
-                Console.WriteLine($"Velocidade inicial no EIXO X = {vEixoX}(m/s)");
+                Console.WriteLine($"Velocidade inicial no EIXO X: {vEixoX}(m/s)");
 
 
                 //calcula a velocidade no eixo Y
                 double vEixoY = VelocidadeInicialEixoY(velocidadeInicial, thetaUsuario);
                 Console.WriteLine("----------------------------------------------------------");
-                Console.WriteLine($"Velocidade inicial no EIXO Y = {vEixoY}(m/s)");
+                Console.WriteLine($"Velocidade inicial no EIXO Y: {vEixoY}(m/s)");
 
 
                 //calcula o tempo gasto
@@ -136,11 +179,11 @@ class Program
 
 
                 //calculca a componente vertical
-                double componenteVertical = ComponenteVertical(vEixoY, aceleracaoGravidade, tempoGasto);
+                double alturaMaxima = AlturaMaximaTrajetoria(vEixoY);
 
 
                 //verifica se o alvo será atingido na subida ou na descida
-                if(componenteVertical > 1)
+                if(alturaAlvo < alturaMaxima)
                 {
                     Console.WriteLine("----------------------------------------------------------");
                     Console.WriteLine("O alvo será atingido durante a SUBIDA");
@@ -151,7 +194,22 @@ class Program
                     Console.WriteLine("O alvo será atingido durante a DESCIDA");
                 }
 
+                            // Plotar o gráfico da trajetória
+                PlotarGrafico(distanciaCanhao, vEixoX, vEixoY, tempoGasto);
+
+               
+                File.WriteAllText(arquivoDados, $"Altura do alvo: {alturaAlvo}\n");
+                File.AppendAllText(arquivoDados, $"Distância do canhão: {distanciaCanhao}\n");
+                File.AppendAllText(arquivoDados, $"Angulo da tangente: {thetaUsuario}\n");
+                File.AppendAllText(arquivoDados, $"Tangente mínima para atingir o alvo: {tangente}°\n");
+                File.AppendAllText(arquivoDados, $"Velocidade inicial do projétil: {velocidadeInicial}(m/s)\n");
+                File.AppendAllText(arquivoDados, $"Velocidade inicial no EIXO X: {vEixoX}\n");
+                File.AppendAllText(arquivoDados, $"Velocidade inicial no EIXO Y: {vEixoY}\n");
+                File.AppendAllText(arquivoDados, $"Tempo gasto para atingir o alvo: {tempoGasto}\n");
+
+
             }
+                
             catch (FormatException)
             {
                 Console.WriteLine("Erro: Entrada inválida. Certifique-se de digitar um número válido.");
@@ -168,9 +226,10 @@ class Program
                 break;
             }
 
+            
         }while(resposta.ToLower() == "sim");
         
    
     Console.ReadKey();
     }
-}
+
