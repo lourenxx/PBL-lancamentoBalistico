@@ -1,8 +1,5 @@
 ﻿using System.Net;
 using System.Security.Cryptography;
-using LiveCharts;
-using LiveCharts.Defaults;
-using LiveCharts.WinForms;
 
 namespace PBL_lancamentoBalistico;
 
@@ -63,45 +60,13 @@ class Program
         return tempoGasto;
     }
 
-     static void PlotarGrafico(double distanciaCanhao, double vEixoX, double vEixoY, double tempoTotal)
-        {
-            // Criando uma nova instância de um gráfico de dispersão
-            var chart = new CartesianChart();
-
-            // Definindo os valores dos eixos X e Y para o gráfico
-            ChartValues<ObservablePoint> valores = new ChartValues<ObservablePoint>();
-            for (double t = 0; t <= tempoTotal; t += 0.1) // Altere o incremento conforme necessário
-            {
-                double x = distanciaCanhao + vEixoX * t;
-                double y = vEixoY * t - 0.5 * 9.80665 * t * t; // Considerando a aceleração da gravidade constante
-                valores.Add(new ObservablePoint(x, y));
-            }
-
-            // Adicionando os valores ao gráfico
-            SeriesCollection series = new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Title = "Trajetória",
-                    Values = valores
-                }
-            };
-            chart.Series = series;
-
-            // Exibindo o gráfico
-            chart.Show();
-        }
-
-}
-
-
-
     //função que calcula a altura maxima
     static double AlturaMaximaTrajetoria(double vEixoY)
     {
         double alturaMaxima = Math.Pow(vEixoY, 2) / (2 * 9.80665); // 9.80665 é a aceleração devido à gravidade
         return alturaMaxima;
     }
+
 
 
     static void Main(string[] args)
@@ -180,6 +145,7 @@ class Program
 
                 //calculca a componente vertical
                 double alturaMaxima = AlturaMaximaTrajetoria(vEixoY);
+                Console.WriteLine($"A altura maxima foi de: {alturaMaxima} metros");
 
 
                 //verifica se o alvo será atingido na subida ou na descida
@@ -193,9 +159,6 @@ class Program
                     Console.WriteLine("----------------------------------------------------------");
                     Console.WriteLine("O alvo será atingido durante a DESCIDA");
                 }
-
-                            // Plotar o gráfico da trajetória
-                PlotarGrafico(distanciaCanhao, vEixoX, vEixoY, tempoGasto);
 
                
                 File.WriteAllText(arquivoDados, $"Altura do alvo: {alturaAlvo}\n");
@@ -232,4 +195,5 @@ class Program
    
     Console.ReadKey();
     }
+}
 
