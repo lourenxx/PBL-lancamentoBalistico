@@ -164,11 +164,12 @@ class Program
                 File.WriteAllText(arquivoDados, $"Altura do alvo: {alturaAlvo}\n");
                 File.AppendAllText(arquivoDados, $"Distância do canhão: {distanciaCanhao}\n");
                 File.AppendAllText(arquivoDados, $"Angulo da tangente: {thetaUsuario}\n");
-                File.AppendAllText(arquivoDados, $"Tangente mínima para atingir o alvo: {tangente}°\n");
-                File.AppendAllText(arquivoDados, $"Velocidade inicial do projétil: {velocidadeInicial}(m/s)\n");
+                File.AppendAllText(arquivoDados, $"Tangente mínima para atingir o alvo: {tangente}\n");
+                File.AppendAllText(arquivoDados, $"Velocidade inicial do projétil: {velocidadeInicial}\n");
                 File.AppendAllText(arquivoDados, $"Velocidade inicial no EIXO X: {vEixoX}\n");
                 File.AppendAllText(arquivoDados, $"Velocidade inicial no EIXO Y: {vEixoY}\n");
                 File.AppendAllText(arquivoDados, $"Tempo gasto para atingir o alvo: {tempoGasto}\n");
+                 File.AppendAllText(arquivoDados, $"Aceleração da Gravidade: {aceleracaoGravidade}\n");
 
 
             }
